@@ -1,0 +1,99 @@
+# Minimal, fast debug run on CPU
+wandb:
+  project: relativetransformer-nfl
+  name: cpointnet-default
+train:
+  seed: 0
+  validate_at_start: true
+  test: false
+  ckpt: null
+  results_dir: ~/ckpt
+  monitor_metric: jade_min_20frames
+
+# Lightning Trainer
+trainer:
+  accelerator: gpu
+  devices: 1
+  precision: 32-true
+  max_epochs: 450
+  fast_dev_run: false           # one batch train/val/test and exit
+  limit_train_batches: null       # safety; only a couple batches
+  limit_val_batches: null
+  limit_test_batches: null
+  log_every_n_steps: 1
+  enable_checkpointing: true
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  check_val_every_n_epoch: 5
+  
+interface:
+  name: CausalScenarioPredictionInterface
+  diff_as_target: true
+  diff_in_input: true
+  data_mean: [60.0, 26.5]
+  data_std: [30.0, 13.25] # we get the data to the range of -2.0 to 2.0
+  diff_mean: [0.0, 0.0]
+  diff_std: [1.0, 1.0]
+  game: football
+  validation_prefix_length: 30
+  validation_max_length: 20
+  validation_num_paths: 8
+  num_id_to_upload: 3
+  num_paths_to_upload: 3
+  upload_every_n_epochs: 20
+  entropy_weight: 0.05
+  min_std: 0.001
+
+dataset:
+  name: TrajectoryDataModule
+  train_bsz: 128
+  val_bsz: 256
+  train_size: null
+  val_size: 2560
+  num_workers: 0
+  data_dir: ~/data/traj/nfl
+
+# Small model for speed (used by CPU class after the code tweak below)
+model:
+  name: CausalTrajModel
+  args:
+    d_traj: 4
+    agent_embedding_dim: 64
+    causal_pointnet_config:
+      in_channels: 4
+      hidden_dim: 64
+      num_layers: 3
+      num_pre_layers: 1
+      out_channels: 64
+    mamba2mixer_config: null
+    num_transformer_blocks: 4
+    transformer_block_config:
+      d_model: 128
+      n_head: 8
+      d_ff: 512
+      dropout: 0.1
+      use_pre_norm: true
+    num_spatial_relation_transformer_blocks: 4
+    spatial_relation_transformer_block_config:
+      d_model: 128
+      d_mesh: 260
+      n_head: 8
+      d_ff: 256
+      dropout: 0.1
+      use_pffn: true
+      ln_before_ffn: true
+    d_agentwise_mlp: [48]
+    d_shared_head_mlp: 768
+    num_scenes: 8
+    num_agents: 23
+    traj_conditioning: true
+
+# Optimizer
+optimizer:
+  lr: 0.002
+  weight_decay: 0.01
+  lr_schedule:
+    div_factor: 15
+    final_div_factor: 200
+    pct_start: 0.06
+    total_steps: null

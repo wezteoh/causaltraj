@@ -1,0 +1,7 @@
+test:
+  num_paths: 20
+  prefix_length: 30
+  max_length: 20
+  temperature: 1.0
+  num_id_to_save: 0
+  save_dir: ~/samples/nfl/test_samples_cpointnet
