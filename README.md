@@ -1,5 +1,5 @@
 # CausalTraj
-**Official Implementation of "Coherent Multi-Agent Trajectory Forecasting in Team Sports with CausalTraj" (AI4TS workshop @ AAAI 2026)**
+**Official Implementation of "Coherent Multi-Agent Trajectory Forecasting in Team Sports with CausalTraj" (accepted to the AI4TS workshop @ AAAI 2026)**
 
 CausalTraj is a temporally causal, likelihood-based model for multi-agent trajectory generation.
 
@@ -21,5 +21,20 @@ Command to evaluate model on NBA dataset:
 python eval.py --base-config-path configs/nba/cpointnet_default.yaml --test-config-path configs/nba/test.yaml --ckpt [CHECKPOINT_PATH] --test-size 12500
 ```
 
+Trained models on the NBA SportVU dataset can be downloaded from https://huggingface.co/wezteoh/causaltraj.
+
 Notes:
-1. For basketball-u and football-u datasets, please rearrange the entity order in each frame to move the position of ball to the last index instead of first, before training and testing.
+1. For Basketball-U and Football-U datasets, please rearrange the entity order in each frame to move the position of the ball to the last index instead of the first.
+
+Bibtex:
+```
+@misc{teoh2025coherentmultiagenttrajectoryforecasting,
+      title={Coherent Multi-Agent Trajectory Forecasting in Team Sports with CausalTraj}, 
+      author={Wei Zhen Teoh},
+      year={2025},
+      eprint={2511.18248},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2511.18248}, 
+}
+```
