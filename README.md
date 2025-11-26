@@ -1,4 +1,10 @@
 # CausalTraj
+
+[![arXiv](https://img.shields.io/badge/arXiv-Paper-red)](https://arxiv.org/abs/2511.18248v1)
+[![Project Page](https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white)](https://causaltraj.github.io)
+
+
+
 **Official Implementation of "Coherent Multi-Agent Trajectory Forecasting in Team Sports with CausalTraj" (accepted to the AI4TS workshop @ AAAI 2026)**
 
 CausalTraj is a temporally causal, likelihood-based model for multi-agent trajectory generation.
